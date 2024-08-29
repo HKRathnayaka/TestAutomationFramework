@@ -20,6 +20,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 
@@ -46,25 +47,6 @@ public class BaseClass {
 	public static ExtentTest node;
 	public static ExtentTest childNode;
 	
-	@BeforeSuite
-	public void startReporting(){
-		
-		extent = new ExtentReports();
-		spark = new ExtentSparkReporter("index.html");
-		spark.config().setTheme(Theme.DARK);
-		spark.config().setDocumentTitle("Test Report");
-		spark.config().setReportName("Functional Test Report");
-		spark.config().setTimeStampFormat("yyyy.MM.dd : HH.mm.ss");
-		
-		extent.attachReporter(spark);
-		
-		extent.setSystemInfo("Operating System", System.getProperty("os.name"));
-		extent.setSystemInfo("Java Version", System.getProperty("java.version"));
-		extent.setSystemInfo("Browser Name", "Chrome");
-		extent.setSystemInfo("Application URL", webUrl);
-		
-	}
-	
 	@Parameters("browser")
 	@BeforeClass
 	public void setup(String browser) throws MalformedURLException {
@@ -90,45 +72,10 @@ public class BaseClass {
 		driver.get(webUrl);
 		
 	}
-	
-	@AfterMethod
-	public void getResult(ITestResult result) {
-		
-	if (result.getStatus() == ITestResult.FAILURE) {
-		test.log(Status.FAIL, result.getName()+" Got Failed");
-		test.log(Status.INFO, result.getThrowable());
-		String imagePath;
-		try {
-			imagePath = captureScreen(driver, result.getName());
-			test.addScreenCaptureFromPath(imagePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		} else if (result.getStatus() == ITestResult.SUCCESS) {
-			test.log(Status.PASS, result.getName()+" Executed successfully");
-		} else {
-			test.log(Status.SKIP, result.getName()+" Skipped");
-			test.log(Status.INFO, result.getThrowable());
-		}
-	
-	}
 
 	@AfterClass
 	public void tearDown() {
 		driver.quit();
-	}
-	
-	@AfterSuite
-	public void openReport() {
-		extent.flush();
-		//to open the report
-//		String pathOfTheReport = System.getProperty("user.dir")+"/index.html";
-//		File report = new File(pathOfTheReport);
-//		try {
-//			Desktop.getDesktop().browse(report.toURI());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	public static String captureScreen(WebDriver driver, String tname) throws IOException {

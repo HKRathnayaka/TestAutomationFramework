@@ -8,10 +8,9 @@
         <methods>
           <include name="tearDown"/>
           <include name="setup"/>
-          <include name="startReporting"/>
           <include name="getResult"/>
-          <include name="verifyLoginWithValidCredentials"/>
           <include name="openReport"/>
+          <include name="verifyLoginWithValidCredentials"/>
         </methods>
       </class> <!-- TestCases.TestLogin -->
     </classes>

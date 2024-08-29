@@ -9,8 +9,8 @@
           <include name="setup"/>
           <include name="startReporting"/>
           <include name="getResult"/>
-          <include name="openReport"/>
           <include name="verifyLoginWithValidCredentials"/>
+          <include name="openReport"/>
         </methods>
       </class> <!-- TestCases.TestLogin -->
     </classes>
